@@ -1,34 +1,42 @@
-import { CreatePost } from "@/app/_components/create-post";
 import { api } from "@/trpc/server";
+import { HeartIcon, PlusIcon } from "./_components/icons";
+import { Button } from "./_components/forms/Button";
+import { Card } from "./_components/templates/Card";
 
 export default async function Home() {
-  const stocks = await api.stockTracker.getAllStocksTracker()
+  const stocks = await api.stockTracker.getAllStocksTracker();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      {stocks.map((stock) => (
-        <div key={stock.id}>
-          <p>{stock.name}</p>
-          <p>{stock.description}</p>
-          <p>{stock.price}</p>
-        </div>
-      ))}
+    <main className="container mx-auto px-4 py-8 md:px-6">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">My Stocks</h1>
+        <Button>
+          <PlusIcon className="mr-2 h-5 w-5" />
+          Add Stock
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {Array.from({ length: 26 }).map((_, index) => (
+          <Card key={index}>
+            <div className="p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <div className="text-lg font-bold">Apple Inc.</div>
+                <Button variant="ghost">
+                  <HeartIcon className="h-6 w-6" />
+                  <span className="sr-only">Favorite</span>
+                </Button>
+              </div>
+              <div className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                AAPL
+              </div>
+              <div className="text-2xl font-bold">$132.45</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Apr 21, 2023 - 4:00 PM
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
     </main>
-  );
-}
-
-async function CrudShowcase() {
-  const latestPost = await api.post.getLatest();
-
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
-    </div>
   );
 }

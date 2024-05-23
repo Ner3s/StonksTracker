@@ -38,14 +38,32 @@ export const stockTrackerRouter = createTRPCRouter({
         currency: true,
         type: true,
       },
+      where: {
+        published: {
+          not: null,
+        },
+      },
+      orderBy: [
+        {
+          favorite: "desc",
+        },
+        {
+          createdAt: "desc",
+        },
+      ],
     });
   }),
-  addFavorite: publicProcedure
-    .input(z.number())
+  handleFavorite: publicProcedure
+    .input(
+      z.object({
+        stockId: z.number(),
+        favorite: z.boolean().optional().default(false),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.stockTracker.update({
-        where: { id: input },
-        data: { favorite: true },
+        where: { id: input.stockId },
+        data: { favorite: input.favorite },
       });
     }),
 });

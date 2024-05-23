@@ -34,6 +34,7 @@ model StockTracker {
     favorite      Boolean
     createdAt     DateTime      @default(now())
     updatedAt     DateTime      @updatedAt
+    published     DateTime?      @default(now())
 
     @@index([name])
 }

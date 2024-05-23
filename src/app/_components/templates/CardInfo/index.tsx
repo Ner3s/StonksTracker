@@ -12,11 +12,13 @@ type CardInfoProps = Omit<
   | "createdAt"
   | "currencyId"
   | "typeId"
+  | "published"
   | "id"
 > & {
   createdAt: string;
   currency: string;
   type: string;
+  handleFavorite: () => void;
 };
 
 export function CardInfo({
@@ -27,6 +29,7 @@ export function CardInfo({
   favorite,
   currency,
   type,
+  handleFavorite,
 }: CardInfoProps) {
   return (
     <Card>
@@ -39,7 +42,7 @@ export function CardInfo({
             </span>
           </div>
           <div>
-            <Button variant="ghost">
+            <Button variant="ghost" onClick={handleFavorite}>
               <HeartIcon
                 className="h-6 w-6"
                 fill={favorite ? "black" : "none"}

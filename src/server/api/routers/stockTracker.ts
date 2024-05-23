@@ -40,4 +40,12 @@ export const stockTrackerRouter = createTRPCRouter({
       },
     });
   }),
+  addFavorite: publicProcedure
+    .input(z.number())
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.stockTracker.update({
+        where: { id: input },
+        data: { favorite: true },
+      });
+    }),
 });

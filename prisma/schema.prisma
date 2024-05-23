@@ -26,12 +26,20 @@ model StocksTracker {
     description   String
     type          StocksType @default(STOCKS)
     price         Float
-    priceReminder Float
+    minPriceAlert Float
+    maxPriceAlert Float
+    currency      Currency   @default(BRL)
     favorite      Boolean
     createdAt     DateTime   @default(now())
     updatedAt     DateTime   @updatedAt
 
     @@index([name])
+}
+
+enum Currency {
+    USD
+    EUR
+    BRL
 }
 
 enum StocksType {

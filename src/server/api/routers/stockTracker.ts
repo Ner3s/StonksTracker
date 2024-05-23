@@ -13,7 +13,8 @@ export const stockTrackerRouter = createTRPCRouter({
         description: z.string(),
         type: z.enum(STOCK_TYPE),
         price: z.number(),
-        priceReminder: z.number(),
+        minPriceAlert: z.number(),
+        maxPriceAlert: z.number(),
         favorite: z.boolean(),
       }),
     )
@@ -25,7 +26,8 @@ export const stockTrackerRouter = createTRPCRouter({
           description: input.description,
           type: input.type,
           price: input.price,
-          priceReminder: input.priceReminder,
+          minPriceAlert: input.minPriceAlert,
+          maxPriceAlert: input.maxPriceAlert,
           favorite: input.favorite,
         },
       });

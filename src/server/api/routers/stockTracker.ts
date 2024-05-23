@@ -2,8 +2,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
-const STOCK_TYPE = ["CRYPTO", "STOCKS", "INVESTMENT_FUNDS"] as const;
-
 export const stockTrackerRouter = createTRPCRouter({
   create: publicProcedure
     .input(
@@ -11,7 +9,8 @@ export const stockTrackerRouter = createTRPCRouter({
         name: z.string().min(1),
         ticker: z.string().min(1).max(16),
         description: z.string(),
-        type: z.enum(STOCK_TYPE),
+        typeId: z.number(),
+        currencyId: z.number(),
         price: z.number(),
         minPriceAlert: z.number(),
         maxPriceAlert: z.number(),
@@ -19,12 +18,13 @@ export const stockTrackerRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.stocksTracker.create({
+      return ctx.db.stockTracker.create({
         data: {
           name: input.name,
           ticker: input.ticker,
           description: input.description,
-          type: input.type,
+          typeId: input.typeId,
+          currencyId: input.currencyId,
           price: input.price,
           minPriceAlert: input.minPriceAlert,
           maxPriceAlert: input.maxPriceAlert,
@@ -33,6 +33,11 @@ export const stockTrackerRouter = createTRPCRouter({
       });
     }),
   getAllStocksTracker: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.stocksTracker.findMany();
+    return ctx.db.stockTracker.findMany({
+      include: {
+        currency: true,
+        type: true,
+      },
+    });
   }),
 });

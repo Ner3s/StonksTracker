@@ -22,12 +22,17 @@ export default async function Home() {
             name={stock.name}
             ticker={stock.ticker}
             createdAt={stock.createdAt.toISOString()}
-            currency={stock.currency}
+            currency={stock.currency.name}
             favorite={stock.favorite}
             price={stock.price}
-            type={stock.type}
+            type={stock.type.name}
           />
         ))}
+        {!stocks && (
+          <div className="col-span-full text-center text-gray-500">
+            No stocks found
+          </div>
+        )}
       </div>
     </main>
   );

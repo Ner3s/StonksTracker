@@ -1,18 +1,22 @@
-import { type StocksTracker } from "@prisma/client";
+import { type StockTracker } from "@prisma/client";
 import { Button } from "../../forms/Button";
 import { EditIcon, HeartIcon } from "../../icons";
 import { Card } from "../Card";
 
 type CardInfoProps = Omit<
-  StocksTracker,
+  StockTracker,
   | "description"
   | "minPriceAlert"
   | "maxPriceAlert"
   | "updatedAt"
   | "createdAt"
+  | "currencyId"
+  | "typeId"
   | "id"
 > & {
   createdAt: string;
+  currency: string;
+  type: string;
 };
 
 export function CardInfo({

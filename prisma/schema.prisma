@@ -19,31 +19,33 @@ model Post {
     @@index([name])
 }
 
-model StocksTracker {
-    id            Int        @id @default(autoincrement())
+model StockTracker {
+    id            Int           @id @default(autoincrement())
     name          String
-    ticker        String     @db.VarChar(16)
+    ticker        String        @db.VarChar(16)
     description   String
-    type          StocksType @default(STOCKS)
+    typeId        Int
+    type          StockType     @relation(fields: [typeId], references: [id])
     price         Float
     minPriceAlert Float
     maxPriceAlert Float
-    currency      Currency   @default(BRL)
+    currencyId    Int
+    currency      StockCurrency @relation(fields: [currencyId], references: [id])
     favorite      Boolean
-    createdAt     DateTime   @default(now())
-    updatedAt     DateTime   @updatedAt
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
 
     @@index([name])
 }
 
-enum Currency {
-    USD
-    EUR
-    BRL
+model StockType {
+    id           Int            @id @default(autoincrement())
+    name         String
+    StockTracker StockTracker[]
 }
 
-enum StocksType {
-    CRYPTO
-    STOCKS
-    INVESTMENT_FUNDS
+model StockCurrency {
+    id           Int            @id @default(autoincrement())
+    name         String
+    StockTracker StockTracker[]
 }
